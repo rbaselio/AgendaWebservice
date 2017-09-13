@@ -34,6 +34,7 @@ public class AlunoConverter {
         JSONStringer js = new JSONStringer();
         try {
             js.object()
+                    .key("id").value(aluno.getId())
                     .key("nome").value(aluno.getNome())
                     .key("endereco").value(aluno.getEndereco())
                     .key("site").value(aluno.getSite())

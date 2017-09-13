@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,11 +14,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.robertolopes.agenda.Retrofit.RetrofitInializador;
 import com.robertolopes.agenda.dao.AlunoDAO;
 import com.robertolopes.agenda.modelo.Aluno;
-import com.robertolopes.agenda.tasks.InsereAlunoTask;
 
 import java.io.File;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FormularioActivity extends AppCompatActivity {
     public static final int CODIGO_CAMERA = 567;
@@ -81,7 +86,19 @@ public class FormularioActivity extends AppCompatActivity {
                 }
                 dao.close();
 
-                new InsereAlunoTask(aluno).execute();
+                //new InsereAlunoTask(aluno).execute();
+                Call call = new RetrofitInializador().getAlunoService().insere(aluno);
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) {
+                        Log.i("ON-RESPONSE", "Sucesso");
+                    }
+
+                    @Override
+                    public void onFailure(Call call, Throwable t) {
+                        Log.e("ON-FAIL", "falha");
+                    }
+                });
 
                 Toast.makeText(FormularioActivity.this, "Aluno " + aluno.getNome() + " salvo!", Toast.LENGTH_SHORT).show();
 

@@ -17,9 +17,6 @@ import com.robertolopes.agenda.modelo.Aluno;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by alura on 07/06/16.
- */
 public class MapaFragment extends SupportMapFragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -12,9 +12,6 @@ import com.robertolopes.agenda.web.WebClient;
 
 import java.util.List;
 
-/**
- * Created by renan on 20/01/16.
- */
 public class EnviaAlunosTask extends AsyncTask<Void, Void, String> {
     private Context context;
     private ProgressDialog dialog;

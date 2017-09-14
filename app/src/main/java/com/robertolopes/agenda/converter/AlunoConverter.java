@@ -7,9 +7,6 @@ import org.json.JSONStringer;
 
 import java.util.List;
 
-/**
- * Created by renan on 15/01/16.
- */
 public class AlunoConverter {
     public String converteParaJSON(List<Aluno> alunos) {
         JSONStringer js = new JSONStringer();

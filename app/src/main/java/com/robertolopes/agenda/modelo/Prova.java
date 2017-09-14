@@ -3,9 +3,6 @@ package com.robertolopes.agenda.modelo;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Created by alura on 05/05/16.
- */
 public class Prova implements Serializable {
     private String materia;
     private String data;

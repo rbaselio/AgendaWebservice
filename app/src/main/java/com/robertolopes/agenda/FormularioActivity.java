@@ -85,8 +85,6 @@ public class FormularioActivity extends AppCompatActivity {
                     dao.insere(aluno);
                 }
                 dao.close();
-
-                //new InsereAlunoTask(aluno).execute();
                 Call call = new RetrofitInializador().getAlunoService().insere(aluno);
                 call.enqueue(new Callback() {
                     @Override

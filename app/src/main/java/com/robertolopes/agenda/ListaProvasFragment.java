@@ -16,9 +16,6 @@ import com.robertolopes.agenda.modelo.Prova;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by alura on 03/06/16.
- */
 public class ListaProvasFragment extends Fragment {
     @Nullable
     @Override

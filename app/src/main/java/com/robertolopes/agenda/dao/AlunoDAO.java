@@ -12,9 +12,6 @@ import com.robertolopes.agenda.modelo.Aluno;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by alura on 12/08/15.
- */
 public class AlunoDAO extends SQLiteOpenHelper {
     public AlunoDAO(Context context) {
         super(context, "Agenda", null, 2);

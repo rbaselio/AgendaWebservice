@@ -1,7 +1,6 @@
 package com.robertolopes.agenda.web;
 
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -10,9 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
 
-/**
- * Created by renan on 20/01/16.
- */
 public class WebClient {
     public String post(String json) {
         String endereco = "https://www.caelum.com.br/mobile";
@@ -45,12 +41,5 @@ public class WebClient {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public void insere(String json) {
-        String endereco = "http://10.10.1.76:8080/api/aluno";
-        Log.d("EXECUTANDO", realizaConexao(json, endereco));
-
-
     }
 }

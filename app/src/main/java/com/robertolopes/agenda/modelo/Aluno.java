@@ -2,9 +2,6 @@ package com.robertolopes.agenda.modelo;
 
 import java.io.Serializable;
 
-/**
- * Created by alura on 12/08/15.
- */
 public class Aluno implements Serializable {
     private Long id;
     private String nome;

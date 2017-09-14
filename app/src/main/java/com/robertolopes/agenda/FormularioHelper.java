@@ -8,9 +8,6 @@ import android.widget.RatingBar;
 
 import com.robertolopes.agenda.modelo.Aluno;
 
-/**
- * Created by alura on 12/08/15.
- */
 public class FormularioHelper {
     private final EditText campoNome;
     private final EditText campoEndereco;

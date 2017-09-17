@@ -20,7 +20,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE Alunos (id INTEGER PRIMARY KEY, " +
+        String sql = "CREATE TABLE Alunos (id TEXT PRIMARY KEY, " +
                 "nome TEXT NOT NULL, " +
                 "endereco TEXT, " +
                 "telefone TEXT, " +
@@ -78,6 +78,9 @@ public class AlunoDAO extends SQLiteOpenHelper {
 
     public void insere(Aluno aluno) {
         SQLiteDatabase db = getWritableDatabase();
+
+        if (aluno.getId() == null) aluno.setId(geraUUID());
+
         ContentValues dados = pegaDadosDoAluno(aluno);
         db.insert("Alunos", null, dados);
     }
@@ -85,6 +88,7 @@ public class AlunoDAO extends SQLiteOpenHelper {
     @NonNull
     private ContentValues pegaDadosDoAluno(Aluno aluno) {
         ContentValues dados = new ContentValues();
+        dados.put("id", aluno.getId());
         dados.put("nome", aluno.getNome());
         dados.put("endereco", aluno.getEndereco());
         dados.put("telefone", aluno.getTelefone());
@@ -143,5 +147,23 @@ public class AlunoDAO extends SQLiteOpenHelper {
         int resultados = c.getCount();
         c.close();
         return resultados > 0;
+    }
+
+    public void sincroniza(List<Aluno> alunos) {
+        for (Aluno aluno : alunos) {
+            if (existe(aluno)) {
+                altera(aluno);
+            } else {
+                insere(aluno);
+            }
+        }
+    }
+
+    private boolean existe(Aluno aluno) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT id FROM Alunos WHERE id = ? LIMIT 1", new String[]{aluno.getId()});
+        int count = c.getCount();
+        c.close();
+        return count > 0;
     }
 }

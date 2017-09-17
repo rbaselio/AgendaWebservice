@@ -70,9 +70,11 @@ public class AlunosAdapter extends BaseAdapter {
         String caminhoFoto = aluno.getCaminhoFoto();
         if (caminhoFoto != null) {
             Bitmap bitmap = BitmapFactory.decodeFile(caminhoFoto);
-            Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
-            campoFoto.setImageBitmap(bitmapReduzido);
-            campoFoto.setScaleType(ImageView.ScaleType.FIT_XY);
+            if (bitmap != null) {
+                Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+                campoFoto.setImageBitmap(bitmapReduzido);
+                campoFoto.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
         }
 
         return view;

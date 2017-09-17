@@ -16,12 +16,18 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.robertolopes.agenda.Retrofit.RetrofitInializador;
 import com.robertolopes.agenda.adapter.AlunosAdapter;
 import com.robertolopes.agenda.dao.AlunoDAO;
+import com.robertolopes.agenda.dto.AlunoSync;
 import com.robertolopes.agenda.modelo.Aluno;
 import com.robertolopes.agenda.tasks.EnviaAlunosTask;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ListaAlunosActivity extends AppCompatActivity {
     private ListView listaAlunos;
@@ -72,6 +78,23 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Call<AlunoSync> call = new RetrofitInializador().getAlunoService().lista();
+        call.enqueue(new Callback<AlunoSync>() {
+            @Override
+            public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
+                List<Aluno> alunos = response.body().getAlunos();
+                AlunoDAO alunoDAO = new AlunoDAO(ListaAlunosActivity.this);
+                alunoDAO.sincroniza(alunos);
+                alunoDAO.close();
+                carregaLista();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoSync> call, Throwable t) {
+                Log.e("ALUNOS FALHOU CHAMADO", t.getMessage());
+            }
+        });
         carregaLista();
     }
 

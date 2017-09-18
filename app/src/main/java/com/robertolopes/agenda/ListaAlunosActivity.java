@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.robertolopes.agenda.Retrofit.RetrofitInializador;
 import com.robertolopes.agenda.adapter.AlunosAdapter;
@@ -31,6 +33,7 @@ import retrofit2.Response;
 
 public class ListaAlunosActivity extends AppCompatActivity {
     private ListView listaAlunos;
+    private SwipeRefreshLayout swipe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_alunos);
 
         listaAlunos = (ListView) findViewById(R.id.lista_alunos);
+        swipe = (SwipeRefreshLayout) findViewById(R.id.swipe_lista_alunos);
 
         listaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,6 +51,13 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 Intent intentVaiProFormulario = new Intent(ListaAlunosActivity.this, FormularioActivity.class);
                 intentVaiProFormulario.putExtra("aluno", aluno);
                 startActivity(intentVaiProFormulario);
+            }
+        });
+
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                buscaAlunos();
             }
         });
 
@@ -60,6 +71,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         });
 
         registerForContextMenu(listaAlunos);
+        buscaAlunos();
     }
 
     private void carregaLista() {
@@ -78,7 +90,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        carregaLista();
+    }
 
+    private void buscaAlunos() {
         Call<AlunoSync> call = new RetrofitInializador().getAlunoService().lista();
         call.enqueue(new Callback<AlunoSync>() {
             @Override
@@ -88,14 +103,15 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 alunoDAO.sincroniza(alunos);
                 alunoDAO.close();
                 carregaLista();
+                swipe.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<AlunoSync> call, Throwable t) {
+                swipe.setRefreshing(false);
                 Log.e("ALUNOS FALHOU CHAMADO", t.getMessage());
             }
         });
-        carregaLista();
     }
 
     @Override
@@ -170,11 +186,23 @@ public class ListaAlunosActivity extends AppCompatActivity {
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                dao.deleta(aluno);
-                dao.close();
+                Call<Void> delete = new RetrofitInializador().getAlunoService().delete(aluno.getId());
+                delete.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                        dao.deleta(aluno);
+                        dao.close();
 
-                carregaLista();
+                        carregaLista();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(ListaAlunosActivity.this, "Não foi possivel remover o aluno", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 return false;
             }
         });

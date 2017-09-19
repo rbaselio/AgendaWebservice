@@ -21,9 +21,14 @@ import android.widget.Toast;
 import com.robertolopes.agenda.adapter.AlunosAdapter;
 import com.robertolopes.agenda.dao.AlunoDAO;
 import com.robertolopes.agenda.dto.AlunoSync;
+import com.robertolopes.agenda.event.AtualizaListaAlunoEvent;
 import com.robertolopes.agenda.modelo.Aluno;
 import com.robertolopes.agenda.retrofit.RetrofitInializador;
 import com.robertolopes.agenda.tasks.EnviaAlunosTask;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -39,6 +44,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alunos);
+
+        EventBus eventBus = EventBus.getDefault();
+        eventBus.register(this);
 
         listaAlunos = (ListView) findViewById(R.id.lista_alunos);
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipe_lista_alunos);
@@ -206,5 +214,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void atualizaListaAlunosEvent(AtualizaListaAlunoEvent event) {
+        carregaLista();
+
     }
 }

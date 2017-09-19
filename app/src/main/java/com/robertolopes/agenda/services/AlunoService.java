@@ -1,4 +1,4 @@
-package com.robertolopes.agenda.Services;
+package com.robertolopes.agenda.services;
 
 import com.robertolopes.agenda.dto.AlunoSync;
 import com.robertolopes.agenda.modelo.Aluno;

@@ -14,9 +14,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.robertolopes.agenda.Retrofit.RetrofitInializador;
 import com.robertolopes.agenda.dao.AlunoDAO;
 import com.robertolopes.agenda.modelo.Aluno;
+import com.robertolopes.agenda.retrofit.RetrofitInializador;
 
 import java.io.File;
 

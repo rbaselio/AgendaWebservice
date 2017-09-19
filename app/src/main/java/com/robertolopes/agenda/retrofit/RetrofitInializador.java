@@ -1,6 +1,7 @@
-package com.robertolopes.agenda.Retrofit;
+package com.robertolopes.agenda.retrofit;
 
-import com.robertolopes.agenda.Services.AlunoService;
+import com.robertolopes.agenda.services.AlunoService;
+import com.robertolopes.agenda.services.DispositivoService;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -28,5 +29,10 @@ public class RetrofitInializador {
 
     public AlunoService getAlunoService() {
         return retrofit.create(AlunoService.class);
+    }
+
+    public DispositivoService getDispositivoService() {
+        return retrofit.create(DispositivoService.class);
+
     }
 }

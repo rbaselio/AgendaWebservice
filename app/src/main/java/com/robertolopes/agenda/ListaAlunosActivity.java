@@ -18,11 +18,11 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.robertolopes.agenda.Retrofit.RetrofitInializador;
 import com.robertolopes.agenda.adapter.AlunosAdapter;
 import com.robertolopes.agenda.dao.AlunoDAO;
 import com.robertolopes.agenda.dto.AlunoSync;
 import com.robertolopes.agenda.modelo.Aluno;
+import com.robertolopes.agenda.retrofit.RetrofitInializador;
 import com.robertolopes.agenda.tasks.EnviaAlunosTask;
 
 import java.util.List;

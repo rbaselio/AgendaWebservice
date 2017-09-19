@@ -76,7 +76,6 @@ public class AlunosAdapter extends BaseAdapter {
                 campoFoto.setScaleType(ImageView.ScaleType.FIT_XY);
             }
         }
-
         return view;
     }
 }

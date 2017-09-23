@@ -29,6 +29,7 @@ public class AlunoSincronizador {
         preferences = new AlunoPreferences(context);
     }
 
+
     public void buscaTodos() {
         if (preferences.temVersao()) {
             buscaNovos();
@@ -68,8 +69,8 @@ public class AlunoSincronizador {
 
             @Override
             public void onFailure(Call<AlunoSync> call, Throwable t) {
-                Log.e("ALUNOS FALHOU CHAMADO", t.getMessage());
                 bus.post(new AtualizaListaAlunoEvent());
+                Log.e("ALUNOS FALHOU CHAMADO", t.getMessage());
             }
         };
     }

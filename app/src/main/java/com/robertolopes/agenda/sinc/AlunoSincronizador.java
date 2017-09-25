@@ -48,6 +48,25 @@ public class AlunoSincronizador {
         call.enqueue(buscaAlunosCallBack());
     }
 
+    public void sincronizaAlunosInternos() {
+        final AlunoDAO dao = new AlunoDAO(context);
+        List<Aluno> alunos = dao.listaNaoSincronizados();
+        Call<AlunoSync> call = new RetrofitInializador().getAlunoService().atualiza(alunos);
+        call.enqueue(new Callback<AlunoSync>() {
+            @Override
+            public void onResponse(Call<AlunoSync> call, Response<AlunoSync> response) {
+                AlunoSync alunoSync = response.body();
+                dao.sincroniza(alunoSync.getAlunos());
+                dao.close();
+            }
+
+            @Override
+            public void onFailure(Call<AlunoSync> call, Throwable t) {
+
+            }
+        });
+    }
+
     @NonNull
     private Callback<AlunoSync> buscaAlunosCallBack() {
         return new Callback<AlunoSync>() {

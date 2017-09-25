@@ -29,7 +29,6 @@ public class AlunoSincronizador {
         preferences = new AlunoPreferences(context);
     }
 
-
     public void buscaTodos() {
         if (preferences.temVersao()) {
             buscaNovos();

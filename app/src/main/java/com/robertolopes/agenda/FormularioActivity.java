@@ -76,6 +76,7 @@ public class FormularioActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_formulario_ok:
+
                 Aluno aluno = helper.pegaAluno();
 
                 AlunoDAO dao = new AlunoDAO(this);

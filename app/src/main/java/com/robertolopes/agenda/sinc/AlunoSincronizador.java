@@ -88,8 +88,25 @@ public class AlunoSincronizador {
             @Override
             public void onFailure(Call<AlunoSync> call, Throwable t) {
                 bus.post(new AtualizaListaAlunoEvent());
-                Log.e("ALUNOS FALHOU CHAMADO", t.getMessage());
+                Log.e("ALUNOS FALHOU CHAMADO", "DEU BO AQUI");
             }
         };
+    }
+
+    public void deleta(final Aluno aluno) {
+        Call<Void> delete = new RetrofitInializador().getAlunoService().delete(aluno.getId());
+        delete.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                AlunoDAO alunoDAO = new AlunoDAO(context);
+                alunoDAO.deleta(aluno);
+                alunoDAO.close();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
     }
 }

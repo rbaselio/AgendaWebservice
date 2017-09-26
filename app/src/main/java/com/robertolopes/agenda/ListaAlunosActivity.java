@@ -16,13 +16,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.robertolopes.agenda.adapter.AlunosAdapter;
 import com.robertolopes.agenda.dao.AlunoDAO;
 import com.robertolopes.agenda.event.AtualizaListaAlunoEvent;
 import com.robertolopes.agenda.modelo.Aluno;
-import com.robertolopes.agenda.retrofit.RetrofitInializador;
 import com.robertolopes.agenda.sinc.AlunoSincronizador;
 import com.robertolopes.agenda.tasks.EnviaAlunosTask;
 
@@ -31,10 +29,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ListaAlunosActivity extends AppCompatActivity {
     private final AlunoSincronizador sincronizador = new AlunoSincronizador(this);
@@ -183,22 +177,13 @@ public class ListaAlunosActivity extends AppCompatActivity {
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Call<Void> delete = new RetrofitInializador().getAlunoService().delete(aluno.getId());
-                delete.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
-                        dao.deleta(aluno);
-                        dao.close();
+                AlunoDAO dao = new AlunoDAO(ListaAlunosActivity.this);
+                dao.deleta(aluno);
+                dao.close();
 
-                        carregaLista();
-                    }
+                carregaLista();
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(ListaAlunosActivity.this, "Não foi possivel remover o aluno", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                sincronizador.deleta(aluno);
 
                 return false;
             }

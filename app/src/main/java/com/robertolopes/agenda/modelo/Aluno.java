@@ -104,4 +104,9 @@ public class Aluno implements Serializable {
     public void desincroniza() {
         setSincronizado(0);
     }
+
+    public void desativa() {
+        setDesativado(1);
+        desincroniza();
+    }
 }

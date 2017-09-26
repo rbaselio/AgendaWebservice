@@ -48,7 +48,7 @@ public class AlunoSincronizador {
         call.enqueue(buscaAlunosCallBack());
     }
 
-    public void sincronizaAlunosInternos() {
+    private void sincronizaAlunosInternos() {
         final AlunoDAO dao = new AlunoDAO(context);
         List<Aluno> alunos = dao.listaNaoSincronizados();
         Call<AlunoSync> call = new RetrofitInializador().getAlunoService().atualiza(alunos);
@@ -83,6 +83,8 @@ public class AlunoSincronizador {
 
                 Log.i("VERSAO", preferences.getVersao());
                 bus.post(new AtualizaListaAlunoEvent());
+                sincronizaAlunosInternos();
+
             }
 
             @Override
